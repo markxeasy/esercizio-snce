@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{{title}}</h1>
+            </div>
+            <div class="col-4 justify-content-left add-product-button">
+                <button class="btn btn-success"
+                        href="{{ path('product-create') }}"
+                >ADD PRODUCT</button>
+            </div>
+            <div class="col-12">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Tags</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <th scope="row">{{product.id}}</th>
+                                <td>{{product.name}}</td>
+                                <td>{{product.description}}</td>
+                                <td>Tag placeholder</td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                            href="{{ path('product-edit', {'id': product.id }) }}"
+                                    >EDIT</button>
+                                    <button class="btn btn-danger" 
+                                            href="{{ path('product-delete', {'id': product.id }) }}"
+                                    >DELETE</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

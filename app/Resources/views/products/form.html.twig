@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{{title}}</h1>
+            </div>
+            <div class="col-12">
+                <form>
+                    <div class="form-group">
+                        <label for="productName">Name</label>
+                        <input  name="productName" 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="{{product.name ?? 'Product name...'}}"
+                                value="{{product.name}}"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea  name="productDescription" 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="{{product.description ?? 'Description...'}}"
+                        >{{product.description}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{action | upper}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
