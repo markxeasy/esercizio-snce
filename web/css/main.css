@@ -6,3 +6,7 @@
     max-height: 50px;
     max-width: 50px;
 }
+
+#tag-error-msg, #name-error-msg {
+    display: none;
+}

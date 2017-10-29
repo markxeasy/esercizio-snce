@@ -29,12 +29,14 @@ class ProductController extends Controller
     public function createAction() {
         $product = new Product();
         $title = "Creazione Prodotto";
+        $submitLabel = "crea";
         $action = "create";
         // replace this example code with whatever you need
         return $this->render(':products:form.html.twig', [
             'product' => $product,
             'title' => $title,
             'action' => $action,
+            'submitLabel' => $submitLabel,
         ]);
     }
 
@@ -44,12 +46,16 @@ class ProductController extends Controller
     public function editAction($id) {
         $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
         $title = "Modifica Prodotto " . $product->getName();
+        $submitLabel = "modifica";
         $action = "edit";
+        $tags = implode(',', $product->getTags());
         // replace this example code with whatever you need
         return $this->render(':products:form.html.twig', [
             'product' => $product,
             'title' => $title,
             'action' => $action,
+            'submitLabel' => $submitLabel,
+            'tags' => $tags,
         ]);
     }
 

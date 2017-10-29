@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
     <div class="container">
         <div class="row">
@@ -12,43 +11,52 @@
                 >{{ 'ritorna al listato prodotti' | upper }}</button>
             </div>
             <div class="col-12">
-                <form>
+                <form name="product-{{ action }}-form" id="product-{{ action }}-form">
                     <div class="form-group">
-                        <label for="productName">Name</label>
+                        <label for="productName">Nome</label>
+                        <div id="name-error-msg" class="alert alert-danger" role="alert">
+                            <strong>Attenzione!</strong> Il nome è richiesto nella creazione di un prodotto.
+                        </div>
                         <input  name="productName" 
                                 type="text" 
                                 class="form-control" 
-                                placeholder="{{product.name ?? 'Product name...'}}"
+                                id="productName"
+                                placeholder="{{product.name ?? 'Nome prodotto...'}}"
                                 value="{{product.name}}"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label for="productDescription">Description</label>
-                        <textarea  name="productDescription" 
-                                type="text" 
-                                class="form-control" 
-                                placeholder="{{product.description ?? 'Description...'}}"
-                        >{{product.description}}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="productTags">Tags</label>
-                        <input  name="productTags" 
-                                type="text" 
-                                class="form-control" 
-                                value="{{product.name}}"
-                                data-role="tagsinput"
                                 required
                         >
                     </div>
                     <div class="form-group">
-                        <label for="productImage">Image</label>
+                        <label for="productDescription">Descrizione</label>
+                        <textarea  name="productDescription" 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="{{product.description ?? 'Descrizione...'}}"
+                        >{{product.description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productTags">Tags</label>
+                        <div id="tag-error-msg" class="alert alert-danger" role="alert">
+                            <strong>Attenzione!</strong> Almeno un tag è richiesto nella creazione di un prodotto.
+                        </div>
+                        <input  name="productTags" 
+                                class="form-control" 
+                                id="productTags"
+                                value="{{ tags ?? '' }}"
+                                type="text"
+                                required
+                        >
+                         <small id="tagHelp" class="form-text text-muted">Premere il tasto ENTER per inserire un tag.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Immagine</label>
                         <input  name="productImage" 
                                 type="file" 
                                 class="form-control" 
-                                placeholder="{{product.image ?? 'Image...'}}"
+                                placeholder="{{product.image ?? 'Immagine...'}}"
                         >
                     </div>
-                    <button type="submit" class="btn btn-primary">{{action | upper}}</button>
+                    <button type="submit" id="submit-btn" class="btn btn-primary">{{submitLabel | upper}}</button>
                 </form>
             </div>
         </div>
