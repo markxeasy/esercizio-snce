@@ -30,7 +30,11 @@
                                 <th scope="row">{{product.getID()}}</th>
                                 <td>{{product.getName()}}</td>
                                 <td>{{product.getDescription()}}</td>
-                                <td>{{product.getTags()}}</td>
+                                <td>
+                                    {% for tag in product.getTags() %}
+                                        <span class="badge badge-info">{{tag}}</span>
+                                    {% endfor %}
+                                </td>
                                 <td><img class="img-fluid product-thumbnail" src="{{asset(product.getImage())}}" /></td>
                                 <td>{{product.getCreationDate() | date('d-m-Y H:i:s') }}</td>
                                 <td>

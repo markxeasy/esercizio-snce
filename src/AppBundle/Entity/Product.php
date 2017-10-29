@@ -108,7 +108,7 @@ const UPLOAD_IMAGES_PATH = 'upload/images/';
      * @return mixed
      */
     public function getTags() {
-        return $this->tags;
+        return explode(',', $this->tags);
     }
 
     /**
