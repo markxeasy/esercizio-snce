@@ -1,3 +1,8 @@
 .add-product-button {
     padding-bottom: 10px;
 }
+
+.product-thumbnail {
+    max-height: 50px;
+    max-width: 50px;
+}

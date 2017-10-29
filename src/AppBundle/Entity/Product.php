@@ -4,6 +4,10 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
+//constant to have the path to where the product images are uploaded
+const UPLOAD_IMAGES_PATH = 'upload/images/';
+
 /**
  * Class Product which relates to the 'product' table in the database 
  * @package AppBundle\Entity
@@ -29,6 +33,21 @@ use Doctrine\ORM\Mapping as ORM;
      * @ORM\Column(type="string")
     */
     protected $description;
+
+    /**
+     * @ORM\Column(type="string")
+    */
+    protected $image;
+
+    /**
+     * @ORM\Column(type="string")
+    */
+    protected $tags;
+
+    /**
+     * @ORM\Column(type="datetime")
+    */
+    protected $creationDate;
 
     /**
      * @return mixed
@@ -66,6 +85,54 @@ use Doctrine\ORM\Mapping as ORM;
      */
     public function setDescription($description) {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage() {
+        return UPLOAD_IMAGES_PATH . $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     * @return Product
+     */
+    public function setImage($image) {
+        $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTags() {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
+     * @return Product
+     */
+    public function setTags($tags) {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate() {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     * @return Product
+     */
+    public function setCreationDate($creationDate) {
+        $this->creationDate = $creationDate;
         return $this;
     }
  }

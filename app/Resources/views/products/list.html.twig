@@ -8,33 +8,37 @@
             </div>
             <div class="col-4 justify-content-left add-product-button">
                 <button class="btn btn-success"
-                        href="{{ path('product-create') }}"
-                >ADD PRODUCT</button>
+                        onclick="location.href='{{ path('product-create') }}';"
+                >{{ 'aggiungi prodotto' | upper }}</button>
             </div>
             <div class="col-12">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Descrizione</th>
                             <th scope="col">Tags</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">Immagine</th>
+                            <th scope="col">Data di creazione</th>
+                            <th scope="col">Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for product in products %}
                             <tr>
-                                <th scope="row">{{product.id}}</th>
-                                <td>{{product.name}}</td>
-                                <td>{{product.description}}</td>
-                                <td>Tag placeholder</td>
+                                <th scope="row">{{product.getID()}}</th>
+                                <td>{{product.getName()}}</td>
+                                <td>{{product.getDescription()}}</td>
+                                <td>{{product.getTags()}}</td>
+                                <td><img class="img-fluid product-thumbnail" src="{{asset(product.getImage())}}" /></td>
+                                <td>{{product.getCreationDate() | date('d-m-Y H:i:s') }}</td>
                                 <td>
                                     <button class="btn btn-primary"
-                                            href="{{ path('product-edit', {'id': product.id }) }}"
+                                            onclick="location.href='{{ path('product-edit', {'id': product.id }) }}';"
                                     >EDIT</button>
                                     <button class="btn btn-danger" 
-                                            href="{{ path('product-delete', {'id': product.id }) }}"
+                                            onclick="location.href='{{ path('product-delete', {'id': product.id }) }}';"
                                     >DELETE</button>
                                 </td>
                             </tr>

@@ -14,7 +14,7 @@ class ProductController extends Controller
      * @Route("/product/list", name="product-list")
      */
     public function listAction() {
-        $products = $this->getDoctrine()->getRepository("AppBundle:Product")->findAll();
+        $products = $this->getDoctrine()->getRepository("AppBundle:Product")->findBy(array(), array('creationDate' => 'ASC'));
         $title = "Listato Prodotti";
         // replace this example code with whatever you need
         return $this->render(':products:list.html.twig', [
@@ -57,10 +57,10 @@ class ProductController extends Controller
      * @Route("/product/{id}/delete", name="product-delete")
      */
     public function deleteAction($id) {
-        $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
-        // replace this example code with whatever you need
-        return $this->render(':products:edit.html.twig', [
-            'product' => $product,
-        ]);
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $product = $doctrineManager->getReference('AppBundle:Product', $id);
+        $doctrineManager->remove($product);
+        $doctrineManager->flush();
+        return $this->listAction();
     }
 }
