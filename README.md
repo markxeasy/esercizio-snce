@@ -5,9 +5,12 @@
 - Clonare il progetto nella cartella desiderata
 - Modificare il file **app/config/parameters.yml** con i dati del database
 - Navigare col terminale nella cartella del progetto
+- Eseguire il comando `composer install` per installare le dipendenze* 
 - Eseguire il comando `php bin/console doctrine:database:create`
 - Eseguire il comando `php bin/console server:run` o l'equivalente per far partire l'istanza locale
 - Aprire il browser e andare all'URL dell'applicazione
+
+* Se necessario installare composer
 
 ## Specifiche ## 
 
