@@ -15,11 +15,25 @@ class ProductController extends Controller
      */
     public function listAction() {
         $products = $this->getDoctrine()->getRepository("AppBundle:Product")->findBy(array(), array('creationDate' => 'ASC'));
+
+        //preparing the tags array to enable real time client side tag filtering
+        $tags = new \stdClass;
+        $counter = 0;
+        foreach ($products as $product) {
+            $currentid = $product->getID();
+            $tags->$currentid = array();
+            foreach ($product->getTags() as $tag) {
+                array_push($tags->$currentid, $tag);
+            }
+            $counter++;
+        }
+        $productTags = json_encode($tags);
+
         $title = "Listato Prodotti";
-        // replace this example code with whatever you need
         return $this->render(':products:list.html.twig', [
             'products' => $products,
             'title' => $title,
+            'productTags' => $productTags,
         ]);
     }
 
@@ -31,7 +45,6 @@ class ProductController extends Controller
         $title = "Creazione Prodotto";
         $submitLabel = "crea";
         $action = "create";
-        // replace this example code with whatever you need
         return $this->render(':products:form.html.twig', [
             'product' => $product,
             'title' => $title,
@@ -49,7 +62,6 @@ class ProductController extends Controller
         $submitLabel = "modifica";
         $action = "edit";
         $tags = implode(',', $product->getTags());
-        // replace this example code with whatever you need
         return $this->render(':products:form.html.twig', [
             'product' => $product,
             'title' => $title,

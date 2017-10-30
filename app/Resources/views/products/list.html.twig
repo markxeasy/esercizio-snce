@@ -6,11 +6,18 @@
             <div class="col-12">
                 <h1>{{title}}</h1>
             </div>
-            <div class="col-4 justify-content-left add-product-button">
+        </div>
+        <div class="row header-button justify-content-between">
+            <div class="col-4">
                 <button class="btn btn-success"
                         onclick="location.href='{{ path('product-create') }}';"
                 >{{ 'aggiungi prodotto' | upper }}</button>
             </div>
+            <div id="search-tags" class="col-4">
+                <input type="text" id="search-input" class="form-control" name="search" placeholder="Ricerca per tag..">
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12">
                 <table class="table table-striped">
                     <thead class="thead-dark">
@@ -26,7 +33,7 @@
                     </thead>
                     <tbody>
                         {% for product in products %}
-                            <tr>
+                            <tr id="product-{{product.getID()}}-row" class="product-row">
                                 <th scope="row">{{product.getID()}}</th>
                                 <td>{{product.getName()}}</td>
                                 <td>{{product.getDescription()}}</td>
@@ -52,5 +59,32 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var productTagsdata = "{{productTags}}";
+        var productTags = JSON.parse(productTagsdata.replace(/&quot;/g,'"'));;
+        $("#search-input").keyup(function(e){
+            var searchString = $("#search-input").val();
+            var searchRegExp = new RegExp(searchString, 'g');
+            var searchMatches = [];
+            for(product in productTags) {
+                for(tag in productTags[product]) {
+                    if(productTags[product][tag].toString().match(searchRegExp)) {
+                        console.log("It's a match");
+                        console.log(productTags[product][tag]);
+                        searchMatches.push(product);
+                    }
+                }
+            }
+            //hide every row
+            $(".product-row").hide();
+            
+            for(match in searchMatches) {
+                //only show rows which match the search string
+                $("#product-" + searchMatches[match] + "-row").show();
+            }
+        });
+    </script>
 {% endblock %}
 
