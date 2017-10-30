@@ -43,14 +43,16 @@
                                             <span class="badge badge-info">{{tag}}</span>
                                         {% endfor %}
                                     </td>
-                                    <td><img class="img-fluid product-thumbnail" src="{{asset(product.getImagePath())}}" /></td>
+                                    <td>
+                                        <img class="img-fluid product-thumbnail" src="{{asset(product.getImagePath())}}" />
+                                    </td>
                                     <td>{{product.getCreationDate() | date('d-m-Y H:i:s') }}</td>
                                     <td>
                                         <button class="btn btn-primary"
                                                 onclick="location.href='{{ path('product-edit', {'id': product.id }) }}';"
                                         >EDIT</button>
                                         <button class="btn btn-danger" 
-                                                onclick="location.href='{{ path('product-delete', {'id': product.id }) }}';"
+                                                onclick="deleteProduct({{product.getID()}});"
                                         >DELETE</button>
                                     </td>
                                 </tr>
@@ -69,16 +71,18 @@
 {% block javascripts %}
     <script>
         var productTagsdata = "{{productTags}}";
-        var productTags = JSON.parse(productTagsdata.replace(/&quot;/g,'"'));;
+        var productTags = JSON.parse(productTagsdata.replace(/&quot;/g,'"'));
+
+        //real time search for tag names
         $("#search-input").keyup(function(e){
             var searchString = $("#search-input").val();
             var searchRegExp = new RegExp(searchString, 'g');
             var searchMatches = [];
             //search every tag associated to a product
-            for(product in productTags) {
-                for(tag in productTags[product]) {
+            for (product in productTags) {
+                for (tag in productTags[product]) {
                     //if there's a match save the product id to later show that row
-                    if(productTags[product][tag].toString().match(searchRegExp)) {
+                    if (productTags[product][tag].toString().match(searchRegExp)) {
                         searchMatches.push(product);
                     }
                 }
@@ -86,11 +90,17 @@
             //hide every row
             $(".product-row").hide();
 
-            for(match in searchMatches) {
+            for (match in searchMatches) {
                 //only show rows which match the search string
                 $("#product-" + searchMatches[match] + "-row").show();
             }
         });
+
+        function deleteProduct(productID) {
+            if (confirm("Sei sicuro di voler cancellare il prodotto?")) {
+                location.href='/product/' + productID + '/delete';
+            }
+        }
     </script>
 {% endblock %}
 
