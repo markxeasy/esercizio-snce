@@ -32,28 +32,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for product in products %}
-                            <tr id="product-{{product.getID()}}-row" class="product-row">
-                                <th scope="row">{{product.getID()}}</th>
-                                <td>{{product.getName()}}</td>
-                                <td>{{product.getDescription()}}</td>
-                                <td>
-                                    {% for tag in product.getTags() %}
-                                        <span class="badge badge-info">{{tag}}</span>
-                                    {% endfor %}
-                                </td>
-                                <td><img class="img-fluid product-thumbnail" src="{{asset(product.getImage())}}" /></td>
-                                <td>{{product.getCreationDate() | date('d-m-Y H:i:s') }}</td>
-                                <td>
-                                    <button class="btn btn-primary"
-                                            onclick="location.href='{{ path('product-edit', {'id': product.id }) }}';"
-                                    >EDIT</button>
-                                    <button class="btn btn-danger" 
-                                            onclick="location.href='{{ path('product-delete', {'id': product.id }) }}';"
-                                    >DELETE</button>
-                                </td>
+                        {% if products | length > 0 %}
+                            {% for product in products %}
+                                <tr id="product-{{product.getID()}}-row" class="product-row">
+                                    <th scope="row">{{product.getID()}}</th>
+                                    <td>{{product.getName()}}</td>
+                                    <td>{{product.getDescription()}}</td>
+                                    <td>
+                                        {% for tag in product.getTags() %}
+                                            <span class="badge badge-info">{{tag}}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td><img class="img-fluid product-thumbnail" src="{{asset(product.getImagePath())}}" /></td>
+                                    <td>{{product.getCreationDate() | date('d-m-Y H:i:s') }}</td>
+                                    <td>
+                                        <button class="btn btn-primary"
+                                                onclick="location.href='{{ path('product-edit', {'id': product.id }) }}';"
+                                        >EDIT</button>
+                                        <button class="btn btn-danger" 
+                                                onclick="location.href='{{ path('product-delete', {'id': product.id }) }}';"
+                                        >DELETE</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center">Nessun prodotto registrato al momento!</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -68,18 +74,18 @@
             var searchString = $("#search-input").val();
             var searchRegExp = new RegExp(searchString, 'g');
             var searchMatches = [];
+            //search every tag associated to a product
             for(product in productTags) {
                 for(tag in productTags[product]) {
+                    //if there's a match save the product id to later show that row
                     if(productTags[product][tag].toString().match(searchRegExp)) {
-                        console.log("It's a match");
-                        console.log(productTags[product][tag]);
                         searchMatches.push(product);
                     }
                 }
             }
             //hide every row
             $(".product-row").hide();
-            
+
             for(match in searchMatches) {
                 //only show rows which match the search string
                 $("#product-" + searchMatches[match] + "-row").show();

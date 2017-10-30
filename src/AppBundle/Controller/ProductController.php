@@ -11,6 +11,13 @@ use AppBundle\Entity\Tag;
 class ProductController extends Controller
 {
     /**
+     * @Route("/", name="homepage")
+     */
+    public function homeAction() {
+        return $this->redirectToRoute('product-list');
+    }
+
+    /**
      * @Route("/product/list", name="product-list")
      */
     public function listAction() {
@@ -44,7 +51,7 @@ class ProductController extends Controller
         $product = new Product();
         $title = "Creazione Prodotto";
         $submitLabel = "crea";
-        $action = "create";
+        $action = "insert";
         return $this->render(':products:form.html.twig', [
             'product' => $product,
             'title' => $title,
@@ -60,7 +67,7 @@ class ProductController extends Controller
         $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
         $title = "Modifica Prodotto " . $product->getName();
         $submitLabel = "modifica";
-        $action = "edit";
+        $action = "update";
         $tags = implode(',', $product->getTags());
         return $this->render(':products:form.html.twig', [
             'product' => $product,
@@ -79,6 +86,53 @@ class ProductController extends Controller
         $product = $doctrineManager->getReference('AppBundle:Product', $id);
         $doctrineManager->remove($product);
         $doctrineManager->flush();
-        return $this->listAction();
+        return $this->redirectToRoute('product-list');
+    }
+
+    /**
+     * @Route("/product/form/{action}", name="product-form-submit")
+     */
+    public function submitAction($action) {
+        //if user selected an image upload it to the uploades/image folder
+        if (count($_FILES) > 0) {
+            $uploaddir = 'upload/images/';
+            $image = basename($_FILES['image']['name']);
+            $uploadfile = $uploaddir . basename($_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploadfile);
+        } else {
+            $image = null;
+        }
+        //create a new Product object with the user's input data
+        $product = new Product($_POST["name"], $_POST["description"], $image, $_POST["tags"]);
+        if($action === 'insert') {
+            return $this->insertAction($product);
+        } else if ($action === 'update') {
+            return $this->updateAction($product, $_POST["productID"]);
+        } else {
+            return false;
+        }
+    }
+
+    public function insertAction($product) {
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $doctrineManager->persist($product);
+        $doctrineManager->flush();
+        return $this->redirectToRoute('product-list');
+    }
+
+    public function updateAction($newProduct, $id) {
+        $doctrineManager = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
+        //Check if the new image is different, if it is delete the old one from the server
+        if ($product->getImage() != $newProduct->getImage()) {
+            unlink($product->getImagePath());
+        }
+        $product->setName($newProduct->getName());
+        $product->setDescription($newProduct->getDescription());
+        $product->setImage($newProduct->getImage());
+        $product->setTags(implode(",", $newProduct->getTags()));
+        $doctrineManager->merge($product);
+        $doctrineManager->flush();
+        return $this->redirectToRoute('product-list');
     }
 }

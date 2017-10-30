@@ -11,13 +11,18 @@
                 >{{ 'ritorna al listato prodotti' | upper }}</button>
             </div>
             <div class="col-12">
-                <form name="product-{{ action }}-form" id="product-{{ action }}-form">
+                <form   name="product-{{ action }}-form" 
+                        id="product-{{ action }}-form" 
+                        action="{{ path('product-form-submit', {'action': action }) }}"
+                        method="POST"
+                        enctype="multipart/form-data"
+                >
                     <div class="form-group">
                         <label for="productName">Nome</label>
                         <div id="name-error-msg" class="alert alert-danger" role="alert">
                             <strong>Attenzione!</strong> Il nome è richiesto nella creazione di un prodotto.
                         </div>
-                        <input  name="productName" 
+                        <input  name="name" 
                                 type="text" 
                                 class="form-control" 
                                 id="productName"
@@ -28,10 +33,10 @@
                     </div>
                     <div class="form-group">
                         <label for="productDescription">Descrizione</label>
-                        <textarea  name="productDescription" 
-                                type="text" 
-                                class="form-control" 
-                                placeholder="{{product.description ?? 'Descrizione...'}}"
+                        <textarea   name="description" 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="{{product.description ?? 'Descrizione...'}}"
                         >{{product.description}}</textarea>
                     </div>
                     <div class="form-group">
@@ -39,7 +44,7 @@
                         <div id="tag-error-msg" class="alert alert-danger" role="alert">
                             <strong>Attenzione!</strong> Almeno un tag è richiesto nella creazione di un prodotto.
                         </div>
-                        <input  name="productTags" 
+                        <input  name="tags" 
                                 class="form-control" 
                                 id="productTags"
                                 value="{{ tags ?? '' }}"
@@ -50,12 +55,15 @@
                     </div>
                     <div class="form-group">
                         <label for="productImage">Immagine</label>
-                        <input  name="productImage" 
+                        <input  name="image" 
                                 type="file" 
                                 class="form-control" 
                                 placeholder="{{product.image ?? 'Immagine...'}}"
                         >
                     </div>
+                    {% if action == "update" %}
+                        <input type="hidden" name="productID" value="{{ product.getID() }}">
+                    {% endif %}
                     <button type="submit" id="submit-btn" class="btn btn-primary">{{submitLabel | upper}}</button>
                 </form>
             </div>

@@ -10,3 +10,7 @@
 #tag-error-msg, #name-error-msg {
     display: none;
 }
+
+.btn {
+    cursor: pointer;
+}

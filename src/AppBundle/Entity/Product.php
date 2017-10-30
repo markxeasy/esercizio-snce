@@ -52,6 +52,18 @@ const UPLOAD_IMAGES_PATH = 'upload/images/';
     /**
      * @return mixed
      */
+    public function __construct($name=null, $description=null, $image=null, $tags=null){
+        $this->setName($name);
+        $this->setDescription($description);
+        $this->setImage($image);
+        $this->setTags($tags);
+        $this->setCreationDate(new \DateTime());
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getID() {
         return $this->productID;
     }
@@ -92,6 +104,13 @@ const UPLOAD_IMAGES_PATH = 'upload/images/';
      * @return mixed
      */
     public function getImage() {
+        return $this->image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImagePath() {
         return UPLOAD_IMAGES_PATH . $this->image;
     }
 
