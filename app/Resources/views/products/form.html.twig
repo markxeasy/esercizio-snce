@@ -51,15 +51,21 @@
                                 type="text"
                                 required
                         >
-                         <small id="tagHelp" class="form-text text-muted">Premere il tasto ENTER per inserire un tag.</small>
+                        <small id="tagHelp" class="form-text text-muted">Premere il tasto ENTER per inserire un tag.</small>
                     </div>
                     <div class="form-group">
                         <label for="productImage">Immagine</label>
+                        {% if product.getImage != "" %}
+                            <br /><img src="{{asset(product.getImagePath())}}" class="product-image-edit" alt="product image">
+                        {% endif %}
                         <input  name="image" 
                                 type="file" 
                                 class="form-control" 
                                 placeholder="{{product.image ?? 'Immagine...'}}"
+                                value="{{asset(product.image)}}"
                         >
+                        <small id="tagHelp" class="form-text text-muted">Tenere conto della configurazione PHP per la dimensione massima dell'immagine.</small>
+                        
                     </div>
                     {% if action == "update" %}
                         <input type="hidden" name="productID" value="{{ product.getID() }}">

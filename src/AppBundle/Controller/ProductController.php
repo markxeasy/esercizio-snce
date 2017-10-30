@@ -124,12 +124,15 @@ class ProductController extends Controller
         $doctrineManager = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
         //Check if the new image is different, if it is delete the old one from the server
-        if ($product->getImage() != $newProduct->getImage()) {
+        if ($product->getImage() != $newProduct->getImage() && $newProduct->getImage() != null) {
             unlink($product->getImagePath());
         }
         $product->setName($newProduct->getName());
         $product->setDescription($newProduct->getDescription());
-        $product->setImage($newProduct->getImage());
+        var_dump($newProduct->getImage());
+        if ($newProduct->getImage() != null) {
+            $product->setImage($newProduct->getImage());            
+        }
         $product->setTags(implode(",", $newProduct->getTags()));
         $doctrineManager->merge($product);
         $doctrineManager->flush();

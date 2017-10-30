@@ -7,6 +7,12 @@
     max-width: 50px;
 }
 
+.product-image-edit {
+    max-height: 128px;
+    max-width: 128px;
+    padding-bottom: 10px;
+}
+
 #tag-error-msg, #name-error-msg {
     display: none;
 }
