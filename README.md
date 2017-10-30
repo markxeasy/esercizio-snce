@@ -1,7 +1,6 @@
-## esercizio gestione prodotti Snce ##
-=============
+## Esercizio gestione prodotti Snce ##
 
-##Guida di installazione##
+## Guida di installazione ##
 - Installare l'ultima versione di Symfony seguendo i passi presenti sul [sito ufficiale](https://symfony.com/download)
 - Clonare il progetto nella cartella desiderata
 - Modificare il file **app/config/parameters.yml** con i dati del database
@@ -10,9 +9,7 @@
 - Eseguire il comando `php bin/console server:run` o l'equivalente per far partire l'istanza locale
 - Aprire il browser e andare all'URL dell'applicazione
 
-##Consegna##
-Specifiche:
-===========
+## Specifiche ## 
 
 1) Pagina "Crea Prodotto"
 La pagina risponde alla rotta /product/create
