@@ -107,7 +107,8 @@ class ProductController extends Controller
         if($action === 'insert') {
             return $this->insertAction($product);
         } else if ($action === 'update') {
-            return $this->updateAction($product, $_POST["productID"], $_POST['deleteImage']);
+            $deleteImage = ($_POST['deleteImage'] === "true");
+            return $this->updateAction($product, $_POST["productID"], $deleteImage);
         } else {
             return false;
         }
@@ -124,9 +125,10 @@ class ProductController extends Controller
         $doctrineManager = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
         //Check if the new image is different, if it is delete the old one from the server
-        if ($product->getImage() != $newProduct->getImage() || $deleteImage) {
+        if ($deleteImage || ($product->getImage() != $newProduct->getImage() && $newProduct->getImage() != null)) {
             unlink($product->getImagePath());
         }
+        var_dump($deleteImage);
         $product->setName($newProduct->getName());
         $product->setDescription($newProduct->getDescription());
         var_dump($newProduct->getImage());
