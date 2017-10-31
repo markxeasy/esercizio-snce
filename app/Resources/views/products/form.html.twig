@@ -61,8 +61,8 @@
                                 <img src="{{asset(product.getImagePath())}}" class="product-image-edit" alt="product image">
                                 <span class="btn btn-danger" onclick="deleteImage();">{{'rimuovi immagine' | upper}}</span>
                             </div>
-                            <input type="hidden" id="deleteImage" name="deleteImage" value="false">
                         {% endif %}
+                        <input type="hidden" id="deleteImage" name="deleteImage" value="false">
                         <input  name="image" 
                                 type="file" 
                                 class="form-control" 
