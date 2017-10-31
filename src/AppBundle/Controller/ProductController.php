@@ -84,6 +84,9 @@ class ProductController extends Controller
     public function deleteAction($id) {
         $doctrineManager = $this->getDoctrine()->getManager();
         $product = $doctrineManager->getReference('AppBundle:Product', $id);
+        if(file_exists($product->getImagePath()) && $product->getImage() != null) {
+            unlink($product->getImagePath());
+        }
         $doctrineManager->remove($product);
         $doctrineManager->flush();
         return $this->redirectToRoute('product-list');
@@ -94,10 +97,19 @@ class ProductController extends Controller
      */
     public function submitAction($action) {
         //if user selected an image upload it to the uploades/image folder
-        if (count($_FILES) > 0) {
+        if ($_FILES['image']['size'] > 0) {
             $uploaddir = 'upload/images/';
-            $image = basename($_FILES['image']['name']);
-            $uploadfile = $uploaddir . basename($_FILES['image']['name']);
+            $counter = 1;
+            //prepare to handle if the same image is used for more products
+            $extensionStart = strpos(basename($_FILES['image']['name']), '.');
+            $imageName = substr(basename($_FILES['image']['name']), 0, $extensionStart);
+            $imageExtension = strrchr(basename($_FILES['image']['name']), '.');
+            do {
+                $image = $imageName . strval($counter) . $imageExtension;
+                $uploadfile = $uploaddir . $image;
+                $counter++;
+            } while (file_exists($uploadfile));
+            //move the file to the upload/images/ directory
             move_uploaded_file($_FILES['image']['tmp_name'], $uploadfile);
         } else {
             $image = null;
@@ -128,10 +140,8 @@ class ProductController extends Controller
         if ($deleteImage || ($product->getImage() != $newProduct->getImage() && $newProduct->getImage() != null) && $product->getImage() != null) {
             unlink($product->getImagePath());
         }
-        var_dump($deleteImage);
         $product->setName($newProduct->getName());
         $product->setDescription($newProduct->getDescription());
-        var_dump($newProduct->getImage());
         if ($newProduct->getImage() != null) {
             $product->setImage($newProduct->getImage());            
         } else if($deleteImage) {
