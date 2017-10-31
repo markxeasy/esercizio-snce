@@ -56,7 +56,12 @@
                     <div class="form-group">
                         <label for="productImage">Immagine</label>
                         {% if product.getImage != "" %}
-                            <br /><img src="{{asset(product.getImagePath())}}" class="product-image-edit" alt="product image">
+                            <div id="product-image">
+                                <br />
+                                <img src="{{asset(product.getImagePath())}}" class="product-image-edit" alt="product image">
+                                <span class="btn btn-danger" onclick="deleteImage();">{{'rimuovi immagine' | upper}}</span>
+                            </div>
+                            <input type="hidden" id="deleteImage" name="deleteImage" value="false">
                         {% endif %}
                         <input  name="image" 
                                 type="file" 
@@ -75,4 +80,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function deleteImage() {
+            if(confirm("Sicuro di voler rimuovere l'immagine?")) {
+                $("#deleteImage").val(true);
+                $("#product-image").remove();
+            }
+        }
+    </script>
 {% endblock %}

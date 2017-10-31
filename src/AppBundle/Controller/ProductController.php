@@ -107,7 +107,7 @@ class ProductController extends Controller
         if($action === 'insert') {
             return $this->insertAction($product);
         } else if ($action === 'update') {
-            return $this->updateAction($product, $_POST["productID"]);
+            return $this->updateAction($product, $_POST["productID"], $_POST['deleteImage']);
         } else {
             return false;
         }
@@ -120,11 +120,11 @@ class ProductController extends Controller
         return $this->redirectToRoute('product-list');
     }
 
-    public function updateAction($newProduct, $id) {
+    public function updateAction($newProduct, $id, $deleteImage) {
         $doctrineManager = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository("AppBundle:Product")->find($id);
         //Check if the new image is different, if it is delete the old one from the server
-        if ($product->getImage() != $newProduct->getImage() && $newProduct->getImage() != null) {
+        if ($product->getImage() != $newProduct->getImage() || $deleteImage) {
             unlink($product->getImagePath());
         }
         $product->setName($newProduct->getName());
@@ -132,6 +132,8 @@ class ProductController extends Controller
         var_dump($newProduct->getImage());
         if ($newProduct->getImage() != null) {
             $product->setImage($newProduct->getImage());            
+        } else if($deleteImage) {
+            $product->setImage(null);
         }
         $product->setTags(implode(",", $newProduct->getTags()));
         $doctrineManager->merge($product);
